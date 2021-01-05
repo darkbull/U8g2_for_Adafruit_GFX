@@ -40,8 +40,13 @@
 
 
 //========================================================
-
-
+#if defined(__GNUC__) && defined(ESP8266)
+uint8_t pgm_read_byte_near_esp(const uint8_t * addr) {
+    uint32_t bytes;
+    bytes = *(uint32_t*)((uint32_t)addr & ~3);
+    return ((uint8_t*)&bytes)[(uint32_t)addr & 3];
+}
+#endif
 
 static uint8_t u8g2_font_get_byte(const uint8_t *font, uint8_t offset)
 {

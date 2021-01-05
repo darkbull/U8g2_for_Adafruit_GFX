@@ -58,6 +58,15 @@
 #  define U8X8_PROGMEM PROGMEM
 #endif
 
+// added by darkbull, 参考: https://github.com/olikraus/u8g2/issues/159
+#if defined(__GNUC__) && defined(ESP8266)
+#  include "c_types.h"
+#  define U8X8_FONT_SECTION(name) ICACHE_FLASH_ATTR
+#  define u8x8_pgm_read(adr) pgm_read_byte_near_esp(adr)
+#  define U8X8_PROGMEM PROGMEM
+extern uint8_t pgm_read_byte_near_esp(const uint8_t * addr);
+#endif
+
 #ifndef U8X8_FONT_SECTION
 #  define U8X8_FONT_SECTION(name) 
 #endif
